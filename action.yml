@@ -1,16 +1,20 @@
 name: Copy / Push Docker tag
-description: "Create Docker tags from existing and push to Docker Hub"
+description: "Create Docker tags from existing and push to a Docker registry server (the default is DockerHub)"
 author: "julb"
 branding:
   icon: copy
   color: orange
 inputs:
   username:
-    description: "The Docker username."
+    description: "The Docker login username."
     required: true
   password:
-    description: "The Docker password."
+    description: "The Docker login password."
     required: true
+  server:
+    description: "The Docker login server."
+    required: false
+    default: "docker.io"
   from:
     description: "The Docker tag to copy."
     required: false

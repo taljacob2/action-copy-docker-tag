@@ -12,6 +12,7 @@ main() {
     # Check inputs
     check_input "${INPUT_USERNAME}" "username"
     check_input "${INPUT_PASSWORD}" "password"
+    check_input "${INPUT_SERVER}" "server"
 
     # File to process.
     DEST_FILE=/tmp/copy-docker-tag.txt
@@ -49,7 +50,7 @@ main() {
     fi
 
     # Login to docker
-    docker_login "${INPUT_USERNAME}" "${INPUT_PASSWORD}"
+    docker_login "${INPUT_USERNAME}" "${INPUT_PASSWORD}" "${INPUT_SERVER}"
 
     # Proceed to copy.
     while read -r LINE; do
@@ -115,13 +116,14 @@ docker_login() {
     # Get variable
     DOCKER_REGISTRY_USER=$1
     DOCKER_REGISTRY_PASSWORD=$2
+    DOCKER_REGISTRY_SERVER="${3:-docker.io}"
 
     # Debug
-    echo "::debug::login to dockerhub -> ${DOCKER_REGISTRY_USER}"
+    echo "::debug::login to docker registry server ${DOCKER_REGISTRY_SERVER} -> ${DOCKER_REGISTRY_USER}"
 
     # Trigger login
     if [ "$DRY_RUN" = false ]; then
-        echo "${DOCKER_REGISTRY_PASSWORD}" | docker login -u "${DOCKER_REGISTRY_USER}" --password-stdin
+        echo "${DOCKER_REGISTRY_PASSWORD}" | docker login "${DOCKER_REGISTRY_SERVER}" -u "${DOCKER_REGISTRY_USER}" --password-stdin
     fi
 }
 
